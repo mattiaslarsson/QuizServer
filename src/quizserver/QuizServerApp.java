@@ -25,9 +25,10 @@ public class QuizServerApp {
 		
 		// Initierar en socket och väntar på uppkoppling
 		try {
+			@SuppressWarnings("resource")
 			ServerSocket serverSocket = new ServerSocket(3000);
+			System.out.println("Server online och väntar på anslutning...");
 			while(true) {
-				System.out.println("Server online och väntar på anslutning...");
 				Socket socket = serverSocket.accept();
 				// Uppkoppling har skett och en ny klient initieras
 				Client client = new Client(socket);
@@ -35,7 +36,8 @@ public class QuizServerApp {
 				clientThread.start();
 			}
 		} catch(IOException ioex) {
-			System.out.println("Kunde inte initiera servern");
+			System.out.println("Kunde inte initiera servern\nTesta att starta om");
+			System.exit(0);
 		}
 	}
 	

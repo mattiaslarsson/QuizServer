@@ -24,7 +24,7 @@ public class Client implements Runnable{
 			writer = new PrintStream(this.socket.getOutputStream());
 			sc = new Scanner(socket.getInputStream());
 		} catch (IOException e) {
-			System.out.println("Kunde inte öppna strömmar");
+			System.out.println("Kunde inte öppna strömmar.\nTesta att starta om servern.");
 		}
 	}
 	
@@ -71,7 +71,6 @@ public class Client implements Runnable{
 	
 	@Override
 	public void run() {
-		writer.println("Välkommen!");
 		while (sc.hasNextLine()) {
 			String input = sc.nextLine();
 			// Om det klienten skriver matchar rätt svar
@@ -90,9 +89,10 @@ public class Client implements Runnable{
 				QuizServerApp.addClient(this);
 				
 				// Denna sträng skickas när man loggar ut
-			} else if (input.startsWith("/drop")) {
+			} else if (input.startsWith("@drop@")) {
 				// Tar bort klienten ur listan
 				QuizServerApp.removeClient(this);
+				QuizServerApp.broadCast("@drop@" + name);
 				
 				// Skickar ut chatmeddelande
 			} else {
